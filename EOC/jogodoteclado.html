@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Digitação</title>
+    <link rel="icon" href="imagens/FAVICON.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #576856;
+            color: white;
+        }
+
+        .container {
+            margin-top: 80px;
+            text-align: center;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        #word-display {
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+
+        #word-input {
+            padding: 10px;
+            font-size: 18px;
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        #start-btn {
+            padding: 10px 20px;
+            background-color: #576856;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #start-btn:hover {
+            background-color: #444;
+        }
+
+        #timer {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        #result {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+        }
+
+        .mascote {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 150px;
+            height: auto;
+            border-radius: 10px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="Home.html">Home</a>
+        <a href="Tutoriais.html">Tutoriais</a>
+        <a href="Login.html">Login</a>
+        <a href="Cadastro.html">Cadastre-se</a>
+        <a href="SalãoDeJogos.html">Salão de jogos</a>
+    </div>
+
+    <div class="container">
+        <h1>Jogo de Digitação</h1>
+        <p>Digite a palavra o mais rápido possível!</p>
+        <div id="word-display">...</div>
+        <input type="text" id="word-input" placeholder="Digite a palavra aqui..." autofocus />
+        <div id="result"></div>
+        <button id="start-btn">Iniciar Jogo</button>
+        <div id="timer">Tempo: 0.00 segundos</div>
+    </div>
+
+    <img src="imagens/Mascote4.jpeg" class="mascote" alt="Mascote">
+
+    <script>
+        const words = ['programacao', 'javascript', 'velocidade', 'desafio', 'teclado', 'palavra', 
+            'aprendizagem', 'aluno', 'praticar', 'aprender', 'rápido'
+        ];
+        let startTime;
+        let currentWord;
+        let interval;
+
+        // Selecionar elementos da página
+        const wordDisplay = document.getElementById('word-display');
+        const wordInput = document.getElementById('word-input');
+        const startBtn = document.getElementById('start-btn');
+        const resultDisplay = document.getElementById('result');
+        const timerDisplay = document.getElementById('timer');
+
+        // Função para iniciar o jogo
+        function startGame() {
+            // Escolhe uma palavra aleatória
+            currentWord = words[Math.floor(Math.random() * words.length)];
+            wordDisplay.textContent = currentWord;
+
+            // Limpa o campo de entrada e foca nele
+            wordInput.value = '';
+            wordInput.focus();
+
+            // Reseta o resultado
+            resultDisplay.textContent = '';
+
+            // Inicia o temporizador
+            startTime = new Date();
+            interval = setInterval(updateTimer, 10);
+        }
+
+        // Função para atualizar o temporizador
+        function updateTimer() {
+            const currentTime = new Date();
+            const elapsedTime = (currentTime - startTime) / 1000;
+            timerDisplay.textContent = `Tempo: ${elapsedTime.toFixed(2)} segundos`;
+        }
+
+        // Função para verificar a palavra
+        function checkWord() {
+            if (wordInput.value === currentWord) {
+                // Palavras coincidem, jogo venceu
+                const endTime = new Date();
+                const finalTime = (endTime - startTime) / 1000;
+                resultDisplay.textContent = `Parabéns! Você digitou corretamente em ${finalTime.toFixed(2)} segundos.`;
+
+                // Para o temporizador
+                clearInterval(interval);
+            }
+        }
+
+        // Evento de clicar no botão de iniciar
+        startBtn.addEventListener('click', startGame);
+
+        // Evento de digitação para verificar a palavra
+        wordInput.addEventListener('input', checkWord);
+    </script>
+</body>
+</html>

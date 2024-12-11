@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EOC - Tutoriais</title>
+    <link rel="icon" href="imagens/FAVICON.png" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            text-align: center;
+        }
+
+        .navbar a:hover {
+            background-color: #576856;
+            color: white;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 80px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 300px;
+            height: 450px; /* Set fixed height for uniformity */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px; /* Fixed height for the images */
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+            flex-grow: 1; /* Ensure the content fills the remaining space */
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .card-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: darkolivegreen;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+            align-self: center;
+        }
+
+        .card-button:hover {
+            background-color: #8A7090;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="Home.html">Home</a>
+        <a href="Tutoriais.html">Tutoriais</a>
+        <a href="Login.html">Login</a>
+        <a href="Cadastro.html">Cadastre-se</a>
+        <a href="SalãoDeJogos.html">Salão de jogos</a>
+    </div>
+
+    <div class="card-container">
+        <!-- Card 1 -->
+        <div class="card">
+            <img src="imagens/Hardware.jpeg" alt="Image 1">
+            <div class="card-content">
+                <h2 class="card-title">Hardware</h2>
+                <p class="card-text">Hardware é o conjunto de componentes físicos que formam um sistema de computador.</p>
+                <a href="Hardware.html" class="card-button">Saber mais...</a>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+            <img src="imagens/teclado2.jpeg" alt="Image 2">
+            <div class="card-content">
+                <h2 class="card-title">Atalhos do teclado</h2>
+                <p class="card-text">Os atalhos de teclado são teclas ou combinações de teclas que permitem fazer
+                    tarefas mais rapidamente.</p>
+                <a href="teclado.html" class="card-button">Saber mais...</a>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+            <img src="imagens/Mouse2.jpeg" alt="Image 3">
+            <div class="card-content">
+                <h2 class="card-title">Mouse</h2>
+                <p class="card-text">Mouse é um periférico essencial para a interação eficiente e intuitiva com a maioria dos sistemas computacionais modernos.</p>
+                <a href="mouse.html" class="card-button">Saber mais...</a>
+            </div>
+        </div>
+
+        <!--  Como Criar Conta no Gmail -->
+        <div class="card">
+            <img src="imagens/Gmail.jpg" alt="Image 4">
+            <div class="card-content">
+                <h2 class="card-title">Como criar conta no Gmail</h2>
+                <p class="card-text">Aprenda a criar uma conta de e-mail no Gmail, uma das plataformas de e-mail mais populares do mundo.</p>
+                <a href="CriarContaGmail.html" class="card-button">Saber mais...</a>
+            </div>
+        </div>
+
+        <!--Como Usar o Bloco de Notas -->
+        <div class="card">
+            <img src="imagens/BlocoDeNotas.png" alt="Bloco de Notas">
+            <div class="card-content">
+                <h2 class="card-title">Como usar o Bloco de Notas</h2>
+                <p class="card-text">Aprenda a abrir, salvar e editar arquivos de texto simples usando o Bloco de Notas.</p>
+                <a href="BlocoDeNotas.html" class="card-button">Saber mais...</a>
+            </div>
+        </div>
+
+        <!-- Card 3: Como Usar Calculadora do Windows -->
+        <div class="card">
+            <img src="imagens/calculadora.jpg" alt="Calculadora do Windows">
+            <div class="card-content">
+                <h2 class="card-title">Calculadora no pc</h2>
+                <p class="card-text">Saiba como usar a calculadora do Windows para operações simples e avançadas.</p>
+                <a href="Calculadora.html" class="card-button">Saber mais...</a>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/arquivos.png" alt="Calculadora do Windows">
+            <div class="card-content">
+                <h2 class="card-title">Organização de Arquivos e Pastas</h2>
+                <p class="card-text"></p>
+                <a href="arquivos.html" class="card-button">Saber mais...</a>
+            </div>
+    </div>
+</body>
+
+</html>

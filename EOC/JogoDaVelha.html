@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha - Contra Máquina com Imagens</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        #gameBoard {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+        .cell img {
+            width: 80px; /* Ajuste o tamanho da imagem */
+            height: 80px;
+        }
+        #status {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        #resetButton {
+            margin-top: 10px;
+            display: block;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="gameBoard">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+
+    <div id="status">Jogador X começa</div>
+    <button id="resetButton">Reiniciar Jogo</button>
+
+    <script>
+        const board = Array(9).fill(null); // Tabuleiro vazio
+        let currentPlayer = 'X'; // O jogador inicial
+        let gameActive = true;
+
+        const winningCombinations = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Linhas
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Colunas
+            [0, 4, 8], [2, 4, 6]              // Diagonais
+        ];
+
+        const cells = document.querySelectorAll('.cell');
+        const statusDisplay = document.getElementById('status');
+        const resetButton = document.getElementById('resetButton');
+
+        // Caminhos das imagens do X e do O
+        const xImage = 'x.png'; // Certifique-se que a imagem está no mesmo diretório ou altere o caminho
+        const oImage = 'o.png'; // Certifique-se que a imagem está no mesmo diretório ou altere o caminho
+
+        // Atualiza a célula com a imagem do jogador
+        function handleCellClick(event) {
+            const cell = event.target;
+            const index = cell.getAttribute('data-index');
+
+            // Verifica se o jogo ainda está ativo e se a célula já está ocupada
+            if (board[index] !== null || !gameActive) return;
+
+            // Marca a célula com a imagem do jogador humano (X)
+            board[index] = currentPlayer;
+            cell.innerHTML = `<img src="${currentPlayer === 'X' ? xImage : oImage}" alt="${currentPlayer}">`;
+
+            // Verifica se houve um vencedor
+            if (checkWinner()) {
+                statusDisplay.textContent = `Jogador ${currentPlayer} venceu!`;
+                gameActive = false;
+                return;
+            }
+
+            // Verifica se houve empate
+            if (board.every(cell => cell !== null)) {
+                statusDisplay.textContent = "Empate!";
+                gameActive = false;
+                return;
+            }
+
+            // Alterna para o jogador O (Máquina) e faz a jogada
+            currentPlayer = 'O';
+            statusDisplay.textContent = `É a vez da máquina`;
+            setTimeout(machineMove, 500); // Pausa de 0.5 segundos para a máquina "pensar"
+        }
+
+        // Lógica da jogada da máquina (movimento aleatório)
+        function machineMove() {
+            if (!gameActive) return;
+
+            let availableCells = board
+                .map((value, index) => value === null ? index : null)
+                .filter(index => index !== null);
+
+            if (availableCells.length === 0) return; // Nenhuma jogada disponível
+
+            // Escolhe uma célula aleatória entre as disponíveis
+            const randomIndex = availableCells[Math.floor(Math.random() * availableCells.length)];
+            board[randomIndex] = currentPlayer;
+            cells[randomIndex].innerHTML = `<img src="${oImage}" alt="O">`;
+
+            // Verifica se a máquina venceu
+            if (checkWinner()) {
+                statusDisplay.textContent = `Máquina venceu!`;
+                gameActive = false;
+                return;
+            }
+
+            // Verifica se houve empate
+            if (board.every(cell => cell !== null)) {
+                statusDisplay.textContent = "Empate!";
+                gameActive = false;
+                return;
+            }
+
+            // Alterna de volta para o jogador humano
+            currentPlayer = 'X';
+            statusDisplay.textContent = `É a vez do jogador ${currentPlayer}`;
+        }
+
+        // Verifica se há uma combinação vencedora
+        function checkWinner() {
+            return winningCombinations.some(combination => {
+                const [a, b, c] = combination;
+                return board[a] === currentPlayer && board[a] === board[b] && board[a] === board[c];
+            });
+        }
+
+        // Reiniciar o jogo
+        function resetGame() {
+            board.fill(null);
+            currentPlayer = 'X';
+            gameActive = true;
+            cells.forEach(cell => (cell.innerHTML = ''));
+            statusDisplay.textContent = "Jogador X começa";
+        }
+
+        // Adiciona o evento de clique para cada célula
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+
+        // Evento de reinício do jogo
+        resetButton.addEventListener('click', resetGame);
+    </script>
+
+</body>
+</html>

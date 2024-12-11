@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Clicar no Quadrado</title>
+    <link rel="icon" href="imagens/FAVICON.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+
+        .navbar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #576856;
+            color: white;
+        }
+
+        .container {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        p {
+            font-size: 24px;
+        }
+
+        #loseMessage {
+            font-size: 48px;
+            color: #000;
+            display: none;
+            text-align: center;
+        }
+
+        #restartButton {
+            display: none;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #576856;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #restartButton:hover {
+            background-color: #444;
+        }
+
+        .game-area {
+            width: 600px;
+            height: 400px;
+            background-color: #fff;
+            border: 2px solid #000;
+            position: relative;
+            margin: 20px 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .square {
+            width: 50px;
+            height: 50px;
+            background-color: #576856;
+            position: absolute;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s ease-in-out;
+        }
+
+        .square:hover {
+            background-color: #444;
+            transform: scale(1.1);
+        }
+
+        .mascote {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 150px;
+            height: auto;
+            border-radius: 10px;
+            z-index: 100;
+        }
+
+        #finalStats {
+            display: none;
+            font-size: 20px;
+            color: #576856;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="Home.html">Home</a>
+        <a href="Tutoriais.html">Tutoriais</a>
+        <a href="Login.html">Login</a>
+        <a href="Cadastro.html">Cadastre-se</a>
+        <a href="SalãoDeJogos.html">Salão de jogos</a>
+    </div>
+
+    <div class="container">
+        <h1>Jogo de Clicar no Quadrado</h1>
+        <p>Pontuação: <span id="score">0</span></p>
+        <p>Tempo Restante: <span id="timeRemaining">30</span> segundos</p>
+        <p id="loseMessage">Fim do Jogo!</p>
+        <button id="restartButton">Jogar Novamente</button>
+        <div id="finalStats"></div>
+    </div>
+
+    <div class="game-area">
+        <div id="square" class="square"></div>
+    </div>
+
+    <img src="imagens/Mascote4.jpeg" class="mascote" alt="Mascote">
+
+    <script>
+        let score = 0;
+        let timeRemaining = 30; // Tempo total de jogo (em segundos)
+        let isGameOver = false;
+        let moveSpeed = 2000; // Velocidade inicial de movimento (2 segundos)
+        let squareSize = 50; // Tamanho inicial do quadrado
+        const square = document.getElementById("square");
+        const gameArea = document.querySelector('.game-area');
+        const scoreDisplay = document.getElementById("score");
+        const timeRemainingDisplay = document.getElementById("timeRemaining");
+        const loseMessage = document.getElementById("loseMessage");
+        const restartButton = document.getElementById("restartButton");
+        const finalStats = document.getElementById("finalStats");
+
+        // Função para gerar uma posição aleatória dentro da área de jogo
+        function randomPosition() {
+            const x = Math.floor(Math.random() * (gameArea.clientWidth - squareSize));
+            const y = Math.floor(Math.random() * (gameArea.clientHeight - squareSize));
+            return { x, y };
+        }
+
+        // Função para mover o quadrado
+        function moveSquare() {
+            if (!isGameOver) {
+                const position = randomPosition();
+                square.style.left = position.x + "px";
+                square.style.top = position.y + "px";
+            }
+        }
+
+        // Função para atualizar o tempo restante
+        function updateTimeRemaining() {
+            if (!isGameOver) {
+                timeRemaining--;
+                timeRemainingDisplay.textContent = timeRemaining;
+
+                // Se o tempo acabar, termina o jogo
+                if (timeRemaining <= 0) {
+                    endGame();
+                }
+            }
+        }
+
+        // Função para finalizar o jogo
+        function endGame() {
+            isGameOver = true;
+            loseMessage.style.display = "block";
+            square.style.display = "none";
+            restartButton.style.display = "block";
+            finalStats.style.display = "block";
+            finalStats.innerHTML = `<p>Pontuação Final: ${score}</p><p>Tempo de Jogo: ${30 - timeRemaining} segundos</p>`;
+            clearInterval(moveIntervalId);
+            clearInterval(timeIntervalId);
+        }
+
+        // Função para aumentar a dificuldade
+        function increaseDifficulty() {
+            score++;
+            scoreDisplay.textContent = score;
+
+            // Diminui o tamanho do quadrado e aumenta a velocidade de movimento a cada 5 pontos
+            if (score % 5 === 0 && moveSpeed > 500) {
+                moveSpeed -= 200;
+                squareSize -= 5;
+                square.style.width = `${squareSize}px`;
+                square.style.height = `${squareSize}px`;
+                clearInterval(moveIntervalId);
+                moveIntervalId = setInterval(moveSquare, moveSpeed);
+            }
+
+            moveSquare();
+        }
+
+        // Função para reiniciar o jogo
+        function restartGame() {
+            score = 0;
+            timeRemaining = 30;
+            moveSpeed = 2000;
+            squareSize = 50;
+            isGameOver = false;
+            loseMessage.style.display = "none";
+            square.style.display = "block";
+            restartButton.style.display = "none";
+            finalStats.style.display = "none";
+            scoreDisplay.textContent = score;
+            timeRemainingDisplay.textContent = timeRemaining;
+
+            // Reinicia os intervalos
+            moveSquare();
+            moveIntervalId = setInterval(moveSquare, moveSpeed);
+            timeIntervalId = setInterval(updateTimeRemaining, 1000);
+        }
+
+        // Adiciona evento de clique ao quadrado
+        square.addEventListener("click", increaseDifficulty);
+
+        // Adiciona evento de clique ao botão "Jogar Novamente"
+        restartButton.addEventListener("click", restartGame);
+
+        // Inicializa o jogo
+        let moveIntervalId = setInterval(moveSquare, moveSpeed);
+        let timeIntervalId = setInterval(updateTimeRemaining, 1000);
+    </script>
+</body>
+</html>
